@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>정수 홈페이지 로그인</title>
+
+</head>
+<body>
+    <h2>정수 홈페이지 로그인</h2>
+    <form id="login" action="/login" method="post" >
+        <label for="ID">ID 입력</label>
+        <input type="text" id="ID" name="id" >
+        <br>
+        <label for="PW">PW 입력</label>
+        <input type="password" id="PW" name="pw" >
+        <br>
+
+        <input type="button" id="login_btn" value="로그인">
+        <input type="button" id="join_btn" value="회원가입하러 가기" onclick="location.href = '/join';">
+    </form>>
+</body>
+</html>
+
+<script>
+    document.getElementById('login_btn').addEventListener('click', function() {
+        var form = document.getElementById('login');
+        var id = document.getElementById('ID').value;
+        var pw = document.getElementById('PW').value;
+
+        form.elements['id'].value = id;
+        form.elements['pw'].value = pw;
+
+        // AJAX로 서버에 데이터 전송
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/login', true);
+        xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    alert(response.message);
+                    if (response.message.includes("환영합니다")) {
+                        window.location.href = "/main_page";  // 원하는 URL로 변경
+                    }
+                } else {
+                console.error('Error:', xhr.status);
+                }
+            }
+        };
+
+        var data = JSON.stringify({ id: id, pw: pw });
+        xhr.send(data);
+    });
+
+
+</script>

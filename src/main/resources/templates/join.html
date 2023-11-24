@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"  lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>정수 홈페이지 회원가입</title>
+    <script>
+        // 부모 창에서 postMessage 이벤트 수신
+        window.addEventListener('message', function(event) {
+            //if (event.origin !== 'http://localhost:8080/join') { // 도메인에 따라 수정
+            //    console.warn('Received message from unexpected origin:', event.origin);
+            //    return;
+            //}
+            // 전달받은 데이터 사용
+            var data = event.data;
+            console.log('Received data from child window:', data);
+
+            // 여기에서 데이터를 사용하여 HTML로 나타내는 로직을 추가할 수 있습니다.
+            // 예를 들어, id와 message를 사용하여 원하는 위치에 HTML을 추가하는 등의 작업을 수행할 수 있습니다.
+            document.getElementById('ID').value = data.id;
+
+            var Pw = document.getElementById('PW');
+            PW.readOnly = false;
+            var Nickname = document.getElementById('NickName');
+            Nickname.readOnly = false;
+            var submit_btn = document.getElementById('Submit_btn');
+            submit_btn.disabled = false;
+
+        }, false);
+    </script>
+</head>
+<body>
+<h2> 회원가입 페이지 입니닷.</h2>
+<!-- form으로 데이터 전송-->
+<form id="submit_form" action="/join" method="post" >
+    <!-- 아이디 입력 전에 먼저 중복확인하고 id고정시켜버림-->
+    <label for="ID">ID 입력</label>
+    <input type="text" id="ID" name="id" readonly onclick="disabled_onclick('ID');">
+    <input type="button" id="check_id_duplicated" name="check_id_duplicated" value="중복확인" onclick="openPopup()">
+    <br>
+    <label for="PW">PW 입력</label>
+    <input type="password" id="PW" name="pw" readonly onclick="disabled_onclick('PW');">
+    <br>
+    <label for="NickName">닉네임 입력</label>
+    <input type="text" id="NickName" name="nickname" readonly onclick="disabled_onclick('NickName');">
+    <br><br>
+    <input type="button" id="Submit_btn" value="회원가입" disabled onclick="submitForm();">
+    <input type="button" id="Back_to_menu" value="뒤로가기" onclick="location.href='/';">
+</form>
+</body>
+</html>
+
+
+<script>
+    function openPopup(){
+        var popupWindow = window.open('/join/check_id', '_blank', 'width=500,height=500');
+    }
+
+    function disabled_onclick(element_id){
+        var element = document.getElementById(element_id);
+        if (element.readOnly){
+        alert("중복확인을 먼저 해주세요.");}
+    }
+
+    function submitForm(){
+        document.getElementById('submit_form').submit();
+        alert("회원가입이 완료되었습니다.");
+    }
+
+
+</script>
