@@ -4,6 +4,8 @@ import com.jungsu_site.jungsu_tutorial.repository.DBMemberRepository;
 import com.jungsu_site.jungsu_tutorial.repository.MemberRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 
 import javax.sql.DataSource;
 
@@ -26,6 +28,10 @@ public class SpringConfig {
         return new DBMemberRepository(dataSource);
     }
 
-
+    //세션 서버용 확인하기 위해 필요
+    @Bean
+    public SessionRegistry sessionRegistry() {
+        return new SessionRegistryImpl();
+    }
 
 }

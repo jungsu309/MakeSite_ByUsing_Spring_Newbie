@@ -3,6 +3,8 @@ package com.jungsu_site.jungsu_tutorial.controller;
 import com.jungsu_site.jungsu_tutorial.domain.Member;
 import com.jungsu_site.jungsu_tutorial.repository.MemberRepository;
 import com.jungsu_site.jungsu_tutorial.service.MemberService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -10,9 +12,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 import java.util.Optional;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 //비밀번호 해싱
@@ -38,14 +44,14 @@ public class MemberController {
 
     //url
     @GetMapping("/join")
-    public String craeteJoinForm(){
+    public String craeteJoinForm() {
         //html이름
         return "join";
     }
 
 
     @GetMapping("/join/check_id")
-    public String createCheckId(){
+    public String createCheckId() {
         //html이름
         return "check_id";
     }
@@ -72,7 +78,7 @@ public class MemberController {
 
     //입력받은 값 처리
     @PostMapping("/join")
-    public String JoinMember(JoinForm form){
+    public String JoinMember(JoinForm form) {
         Member member = new Member();
         //id저장.
         member.setId(form.getId());
@@ -88,14 +94,14 @@ public class MemberController {
     }
 
     @GetMapping("/login")
-    public String Login(){
+    public String Login() {
         //html이름
         return "login";
     }
 
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody JoinForm form) {
+    public ResponseEntity<String> login(@RequestBody JoinForm form, HttpSession session) {
         System.out.println(form);
         System.out.println(form.getId());
         System.out.println(form.getPw());
@@ -105,19 +111,36 @@ public class MemberController {
         if (logined_member != null) {
             //아이디 발견
             message = "안녕하세요 " + logined_member.getId() + "님.\\n환영합니다!";
-
+            //세션에 저장.
+            session.setAttribute("userID", logined_member.getId());
+            // 세션에 사용자 정보 저장
+            //포기한 함수
+//            memberService.SessionPrint(logined_member, session);
         } else {
             message = "올바르지 않은 ID 혹은 PW입니다. 다시 시도해주세요.";
         }
+
         //메세지전송
         return ResponseEntity.ok("{\"message\":\"" + message + "\"}");
     }
 
 
+    //로그인 완료 시 나오는 화면 연결
     @GetMapping("/main_page")
-    public String LoginSuccess(){
+    public String LoginSuccess() {
+
         //html이름
         return "mainPage";
     }
 
+
+    //로그아웃 기능
+    @PostMapping("/logout")
+    public String LogOut(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate(); // 세션 파기
+        }
+        return "homepage"; // 로그아웃 후 리다이렉트할 페이지
+    }
 }
