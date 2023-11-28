@@ -135,12 +135,18 @@ public class MemberController {
 
 
     //로그아웃 기능
-    @PostMapping("/logout")
+    @PostMapping("/log_out")
     public String LogOut(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate(); // 세션 파기
         }
-        return "homepage"; // 로그아웃 후 리다이렉트할 페이지
+//        return "homepage"; // 로그아웃 한 후 이동하는 페이지 ->url에 log_out이 남음
+        return "redirect:/"; //리다이렉트 해서 url 클리어 가능.
+        /*
+        * 예를 들어, return "redirect:/main_page";라고 하면 사용자가 해당 컨트롤러 메서드를 호출하면
+        *  브라우저는 /main_page로 리다이렉트됩니다. 이는 사용자가 브라우저의 주소 표시줄에 /main_page로
+        * 이동하도록 하는 것과 유사합니다.
+        * */
     }
 }
