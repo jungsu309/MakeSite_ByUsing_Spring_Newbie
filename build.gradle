@@ -28,6 +28,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
+//	//테스트코드에서 사용
+//	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
+//	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
+
 }
 
 tasks.named('bootBuildImage') {
