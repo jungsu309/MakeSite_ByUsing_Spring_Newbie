@@ -4,12 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <title>정수의 홈페이지</title>
+    <link rel="stylesheet" href="../static/css/welcome-homepage.css">
 </head>
 <body>
-    <h2> 정수의 홈페이지에 온걸 환영합니다~</h2>
-    <input type="button" id="join_member" onclick="location.href='/join'" value="회원가입">
-    <br>
-    <input type="button" id="login" onclick="location.href='/login'" value ="로그인">
+    <div class="Homepage-main">
+        <div class="Welcome-message">
+            <h2> 정수 Homepage</h2>
+            <h3> Welcome!</h3>
+            <p> 정수의 홈페이지는 로그인 후 이용 가능합니다.</p>
+        </div>
+        <div class ="buttons">
+            <div class="joinbtn">
+                <p> 회원가입을 아직 안하셨나요? </p>
+                <input type="button" id="join_member" onclick="location.href='/join'" value="회원가입">
+            </div>
+            <div class="loginbtn">
+                <p> 회원가입을 이미 하셨나요? </p>
+            <input type="button" id="login" onclick="location.href='/login'" value ="로그인">
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
