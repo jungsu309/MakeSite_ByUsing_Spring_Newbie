@@ -101,7 +101,7 @@ public class MemberController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody JoinForm form, HttpSession session) {
+    public ResponseEntity<String> login(@RequestBody JoinForm form, HttpSession session, HttpServletRequest request) {
         System.out.println(form);
         System.out.println(form.getId());
         System.out.println(form.getPw());
@@ -113,6 +113,12 @@ public class MemberController {
             message = "안녕하세요 " + logined_member.getId() + "님.\\n환영합니다!";
             //세션에 저장.
             session.setAttribute("userID", logined_member.getId());
+
+            // 확인을 위해 세션을 다시 가져와서 출력
+            HttpSession existingSession = request.getSession();
+            String storedUserID = (String) existingSession.getAttribute("userID");
+            System.out.println("Stored userID in session: " + storedUserID);
+
             // 세션에 사용자 정보 저장
             //포기한 함수
 //            memberService.SessionPrint(logined_member, session);
@@ -134,7 +140,7 @@ public class MemberController {
     }
 
 
-    //로그아웃 기능
+    //로그아웃 기능-
     @PostMapping("/log_out")
     public String LogOut(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
