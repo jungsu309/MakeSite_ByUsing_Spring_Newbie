@@ -1,5 +1,6 @@
 package com.jungsu_site.jungsu_tutorial.service;
 
+import com.jungsu_site.jungsu_tutorial.repository.DBBackGroundRepository;
 import com.jungsu_site.jungsu_tutorial.repository.DBMemberRepository;
 import com.jungsu_site.jungsu_tutorial.repository.MemberRepository;
 import org.springframework.context.annotation.Bean;
@@ -32,6 +33,11 @@ public class SpringConfig {
     @Bean
     public SessionRegistry sessionRegistry() {
         return new SessionRegistryImpl();
+    }
+
+    @Bean
+    public DBBackGroundRepository dbBackGroundRepository(){
+        return new DBBackGroundRepository(dataSource);
     }
 
 }
