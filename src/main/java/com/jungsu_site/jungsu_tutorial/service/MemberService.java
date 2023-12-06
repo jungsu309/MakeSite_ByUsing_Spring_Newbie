@@ -3,9 +3,12 @@ package com.jungsu_site.jungsu_tutorial.service;
 import com.jungsu_site.jungsu_tutorial.controller.checkID;
 import com.jungsu_site.jungsu_tutorial.domain.Member;
 import com.jungsu_site.jungsu_tutorial.repository.MemberRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.stereotype.Service;
@@ -35,6 +38,13 @@ public class MemberService {
     public String join(Member member) {
         memberRepository.save(member);
         return member.getId();
+    }
+
+    //현재 세션을 이용하여 userid를 가져오는 방법.
+    public String getSessionAttribute(HttpServletRequest request, String attributeName) {
+        HttpSession session = request.getSession();
+        System.out.println((String) session.getAttribute(attributeName));
+        return (String) session.getAttribute(attributeName);
     }
 
 
