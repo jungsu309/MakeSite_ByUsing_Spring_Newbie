@@ -1,4 +1,7 @@
-.Welcome-message {
-    font-size : 20px
-    text-align:center;
+.Welcome-message{
+    text-align : center;
+}
+
+.buttons{
+    display : grid;
 }
