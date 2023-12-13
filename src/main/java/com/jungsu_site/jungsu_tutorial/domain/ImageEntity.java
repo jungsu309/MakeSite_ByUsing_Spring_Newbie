@@ -11,6 +11,10 @@ public class ImageEntity {
     private String userName;
     private LocalDateTime currentTime; // 현재 시간 추가
 
+    public ImageEntity() {
+        this.currentTime = LocalDateTime.now();
+    }
+
     public String getFileName() {
         return fileName;
     }
@@ -43,8 +47,11 @@ public class ImageEntity {
         this.userName = userName;
     }
 
-    public LocalDateTime currentTime() {
+    public LocalDateTime getCurrentTime() {
         return currentTime;
+    }
+    public void setCurrentTime (LocalDateTime currentTime) {
+        this.currentTime = currentTime;
     }
 
 }
