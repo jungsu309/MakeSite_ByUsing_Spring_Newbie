@@ -3,6 +3,7 @@ package com.jungsu_site.jungsu_tutorial.repository;
 import com.jungsu_site.jungsu_tutorial.domain.ImageEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,8 +13,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class DBBackGroundRepository {
     private final JdbcTemplate jdbcTemplate;
@@ -30,11 +34,14 @@ public class DBBackGroundRepository {
         String filePath = imageEntity.getFilePath();
         long fileSize = imageEntity.getFileSize();
         String userName = imageEntity.getUserName();
+        LocalDateTime currentTime = imageEntity.getCurrentTime();
 
         System.out.println(fileName);
         System.out.println(filePath);
         System.out.println(fileSize);
         System.out.println(userName);
+        System.out.println(currentTime);
+
 
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         //member 테이블에 기본키?(자동으로 만들어지는 키) Auto_serial_number을 넣어준다.
@@ -46,6 +53,7 @@ public class DBBackGroundRepository {
         parameters.put("file_path", filePath);
         parameters.put("file_size", fileSize);
         parameters.put("ID", userName);
+        parameters.put("creation_time", currentTime); // 현재시간 추가
 
         System.out.println(parameters);
 
@@ -54,5 +62,26 @@ public class DBBackGroundRepository {
 
 
     }
+    public List<ImageEntity> findById(String userId){
+//        List<ImageEntity> result = jdbcTemplate.query("select * from Background_Img where user_name =?",
+//                imageRowMapper(), userId);
+//        return result.stream().findAny(); -> 여러개중에 하나 할때만.
 
+        return jdbcTemplate.query("select * from Background_Img where ID =?",
+                imageRowMapper(), userId);
+    }
+
+    private RowMapper<ImageEntity> imageRowMapper() {
+        return (rs, rowNum) -> {
+
+            ImageEntity imageEntity = new ImageEntity();
+            imageEntity.setFileName(rs.getString("file_name"));
+            imageEntity.setFilePath(rs.getString("file_path"));
+            imageEntity.setUserName(rs.getString("id"));
+            imageEntity.setFileSize(rs.getLong("file_size"));
+            imageEntity.setCurrentTime(rs.getTimestamp("creation_time").toLocalDateTime());
+
+            return imageEntity;
+        };
+    }
 }
