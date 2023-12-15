@@ -37,7 +37,6 @@ public class SaveImageService {
             // 또는 fileName = "defaultFileName.jpg";
         }
 
-        long fileSize = file.getSize();
         //내가 지정해주는거다.
         //static까지가 기본 경로이기 때문에? 그 이후부터..해주자..ㅠㅠㅠ
 //        "src", "main", "resources", "static"
@@ -46,7 +45,8 @@ public class SaveImageService {
         Path uploadPath = Paths.get("src", "main", "resources", "static", "Uploads", "BackGroundImage").toAbsolutePath();
         //이게 상대경로
 //        Path uploadPath = Paths.get("Uploads", "BackGroundImage");
-        String str_path = "/Uploads/BackGroundImage";//localhost:8080
+
+        String str_path = "/Uploads/BackGroundImage";
         ImageEntity imageEntity = new ImageEntity();
         imageEntity.setFileName(fileName);
         imageEntity.setFilePath(str_path + "/" + fileName);//+"/"+fileName
