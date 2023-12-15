@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>배경화면 설정하기</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+<h2>배경화면으로 지정하고 싶은 파일을 선택해주세요!</h2>
+<form action="/BgImgMenu/inputImg" method="post" enctype="multipart/form-data">
+    <div class="inputImg">
+        <input type="file" name="Fileinput" id="Fileinput" accept="image/*">
+        <button type="button" onclick="uploadFile()"> file Upload </button>
+    </div>
+</form>
+
+
+<div class="grid_imgs">
+    <p>현재 당신의 배경화면 목록</p>
+    <div class="imageContainer"></div>
+</div>
+
+<div id="gallary">
+</div>
+
+</body>
+</html>
+
+<script>
+    // 이미지를 로드하기 위한 함수
+    function loadImage(url) {
+        $(".imageContainer").append('<img src="' + url + '" alt="Image" width=300 height=300>');
+    }
+
+    // 이미지 목록을 서버로부터 가져오는 함수
+    function loadImages() {
+        $.ajax({
+            type: 'GET',
+            url: '/BgImgMenu/getImg',
+            //url: '/BgImgMenu/getImg?'+ new Date().getTime(),
+            success: function (response) {
+                $(".imageContainer").empty();
+                // 이미지를 순차적으로 로드하기 위한 반복문
+                response.forEach(function (imageUrl) {
+                    imageUrl = imageUrl.replace(/\\/g, "/");
+                    console.error('이미지 url : ' + imageUrl);
+
+                    // 이미지 로드 함수 호출
+                    loadImage(imageUrl);
+                });
+            },
+            error: function (error) {
+                console.log("response 에러.");
+                console.log(error);
+            }
+        });
+    }
+
+    // 파일 업로드 함수
+    function uploadFile() {
+        var fileInput = $('#Fileinput')[0];
+        var file = fileInput.files[0];
+
+        if (file) {
+            var formData = new FormData();
+            formData.append('Fileinput', file);
+
+            $.ajax({
+                type: 'POST',
+                url: '/BgImgMenu/inputImg',
+                data: formData,
+                contentType: false,
+                processData: false,
+                cache: false,
+                success: function (response) {
+                    // 이미지 목록 갱신
+                    loadImages();
+                },
+                error: function (error) {
+                    console.log("response 에러.");
+                    console.log(error);
+                }
+            });
+        } else {
+            alert('파일을 선택하세요.');
+        }
+    }
+
+    // 페이지 로드 시 이미지 목록을 로드
+    loadImages();
+</script>
