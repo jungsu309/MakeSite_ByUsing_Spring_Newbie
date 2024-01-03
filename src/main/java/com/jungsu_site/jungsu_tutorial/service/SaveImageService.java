@@ -37,16 +37,8 @@ public class SaveImageService {
             // 또는 fileName = "defaultFileName.jpg";
         }
 
-        //내가 지정해주는거다.
-        //static까지가 기본 경로이기 때문에? 그 이후부터..해주자..ㅠㅠㅠ
-//        "src", "main", "resources", "static"
-//        String uploadPath = "src/main/resources/static/Uploads/BackGroundImage";
-        //아래거는 절대경로;;
-        Path uploadPath = Paths.get("src", "main", "resources", "static", "Uploads", "BackGroundImage").toAbsolutePath();
-        //이게 상대경로
-//        Path uploadPath = Paths.get("Uploads", "BackGroundImage");
-
-        String str_path = "/Uploads/BackGroundImage";
+        //DB에 저장되는 데이터
+        String str_path = "Uploads/BG_img";
         ImageEntity imageEntity = new ImageEntity();
         imageEntity.setFileName(fileName);
         imageEntity.setFilePath(str_path + "/" + fileName);//+"/"+fileName
@@ -54,7 +46,8 @@ public class SaveImageService {
         imageEntity.setUserName(sessionAttribute);
 
 
-        // 파일 복사 -> path에 저장
+        // 파일 복사 -> path에 저장.
+        Path uploadPath = Paths.get("src", "main", "resources", "Uploads", "BG_img").toAbsolutePath();
         Path destinationPath = uploadPath.resolve(fileName);  // 목적지 Path 생성
         System.out.println(destinationPath);
         Files.copy(file.getInputStream(), destinationPath, StandardCopyOption.REPLACE_EXISTING);
