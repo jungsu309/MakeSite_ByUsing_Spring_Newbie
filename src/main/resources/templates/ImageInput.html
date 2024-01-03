@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <title>배경화면 설정하기</title>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <style>
+        html {
+            background-size: cover;
+        }
+
+    </style>
 </head>
 <body>
 <h2>배경화면으로 지정하고 싶은 파일을 선택해주세요!</h2>
@@ -29,7 +35,7 @@
 <script>
     // 이미지를 로드하기 위한 함수
     function loadImage(url) {
-        $(".imageContainer").append('<img src="' + url + '" alt="Image" width=300 height=300>');
+        $(".imageContainer").append('<img class="inputImg" src="' + url + '" alt="Image" width=300 height=300>');
     }
 
     // 이미지 목록을 서버로부터 가져오는 함수
@@ -39,11 +45,12 @@
             url: '/BgImgMenu/getImg',
             //url: '/BgImgMenu/getImg?'+ new Date().getTime(),
             success: function (response) {
+                console.log(response)
                 $(".imageContainer").empty();
                 // 이미지를 순차적으로 로드하기 위한 반복문
                 response.forEach(function (imageUrl) {
                     imageUrl = imageUrl.replace(/\\/g, "/");
-                    console.error('이미지 url : ' + imageUrl);
+                    console.log('이미지 url : ' + imageUrl);
 
                     // 이미지 로드 함수 호출
                     loadImage(imageUrl);
@@ -88,4 +95,38 @@
 
     // 페이지 로드 시 이미지 목록을 로드
     loadImages();
+
+
+    // 이미지 클릭 이벤트 바인딩
+    $(document).on('click', '.inputImg', function () {
+        // 클릭한 이미지의 URL을 가져와서 배경화면으로 설정
+        var clickedImageUrl = $(this).attr('src');
+        // DB 정보 수정을 위한 AJAX 호출
+        updateDatabaseWithBackground(clickedImageUrl);
+        //배경화면 설정
+        setWebsiteBackground(clickedImageUrl);
+
+    });
+    // 배경화면 설정 함수
+    function setWebsiteBackground(imageUrl) {
+        document.body.style.backgroundImage = 'url(' + imageUrl + ')';
+        document.body.style.backgroundRepeat = 'no-repeat';
+        document.body.style.backgroundSize = 'cover';
+    }
+
+    // 이미지 클릭 시 DB 정보 수정 함수
+    function updateDatabaseWithBackground(imageUrl) {
+        $.ajax({
+            type: 'POST',
+            url: '/BgImgMenu/updateDbWithBackground',
+            data: { imageUrl: imageUrl }, // Pass the clicked image URL to the server
+            success: function (response) {
+                console.log('Database updated successfully.');
+            },
+            error: function (error) {
+                console.log('Error updating database.');
+                console.log(error);
+            }
+        });
+    }
 </script>
