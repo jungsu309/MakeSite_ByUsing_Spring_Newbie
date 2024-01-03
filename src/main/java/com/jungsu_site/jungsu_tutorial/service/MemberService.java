@@ -40,39 +40,12 @@ public class MemberService {
         return member.getId();
     }
 
-    //현재 세션을 이용하여 userid를 가져오는 방법.
+    //현재 세션을 이용하여 userid를 가져오는 방법. 현재 세션을 확인할 수 있다.
     public String getSessionAttribute(HttpServletRequest request, String attributeName) {
         HttpSession session = request.getSession();
         System.out.println((String) session.getAttribute(attributeName));
         return (String) session.getAttribute(attributeName);
     }
-
-
-    //세션 확인 - 서버용 -> 안됨. 이런건 없나보다.. 다음에 다시 알아보던지 하자. 지쳐
-//    public void SessionPrint(Member logined_member, HttpSession session) {
-//        session.setAttribute("loginedMember", logined_member.getId());
-//        try {
-//            Thread.sleep(1000); // 1초 딜레이
-//        } catch (InterruptedException e) {
-//            System.out.println("뭐 시봉방");
-//        }
-//        System.out.println(logined_member.getId());
-//
-//        //넣었던거 바로 빼는건 되긴 함..
-////        Object loginedMember2 = session.getAttribute("loginedMember");
-////        System.out.println("loginedMember Attribute: " + loginedMember2);
-//
-//        //유저 세션에 대해 출력
-//        List<SessionInformation> sessions = sessionRegistry.getAllSessions(logined_member.getId(), true);
-//        System.out.println("세션리스트 출력");
-//        System.out.println(sessions);
-//        // 세션 정보 출력 또는 다른 작업 수행
-//        for (SessionInformation session_info : sessions) {
-//            System.out.println("Session ID: " + session_info.getSessionId());
-//            // 추가적인 세션 정보 출력 등
-//        }
-//
-//    }
 
 
 
