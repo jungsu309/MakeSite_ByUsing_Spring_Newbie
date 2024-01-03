@@ -26,3 +26,10 @@ CREATE TABLE Background_img (
     creation_time TIMESTAMP,
     FOREIGN KEY (ID) REFERENCES js_site_member(ID)
 );
+
+
+CREATE TABLE User_now_Bg (
+    ID VARCHAR(255) PRIMARY KEY,
+    file_path VARCHAR(255),
+    FOREIGN KEY (ID) REFERENCES js_site_member(ID)
+);
