@@ -1,4 +1,4 @@
-package com.jungsu_site.jungsu_tutorial.service;
+package com.jungsu_site.jungsu_tutorial.config;
 
 import com.jungsu_site.jungsu_tutorial.repository.DBBackGroundRepository;
 import com.jungsu_site.jungsu_tutorial.repository.DBMemberRepository;
