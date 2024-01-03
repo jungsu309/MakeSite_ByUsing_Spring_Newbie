@@ -20,16 +20,16 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-	//JDBC, H2관련 라이브러리
+	//JDBC, H2, MySql 관련 라이브러리
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'com.mysql:mysql-connector-j'
+//	runtimeOnly 'com.h2database:h2'
 
-	//mysql DB연결
-//	runtimeOnly 'mysql:mysql-connector-java'
 
 	//비밀번호 해싱관련
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
 
 //	//테스트코드에서 사용
 //	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
